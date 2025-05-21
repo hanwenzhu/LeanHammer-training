@@ -13,7 +13,7 @@ from sentence_transformers import (
 )
 import torch
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from models import Corpus, read_states, base_dir
 from data import RetrievalDataset, load_data, PremiseRetrievalDataCollator
