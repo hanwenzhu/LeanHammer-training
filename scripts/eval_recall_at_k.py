@@ -8,6 +8,8 @@ import sys
 import numpy as np
 import tqdm
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 # We use our data because we are doing eval
 data_dir = "/data/user_data/thomaszh/Mathlib"
 mathlib_only = False

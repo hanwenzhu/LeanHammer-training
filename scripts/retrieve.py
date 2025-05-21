@@ -5,12 +5,15 @@ import json
 import logging
 from typing import Dict, Any, List, Optional, Literal, Tuple
 import os
+import sys
 from dataclasses import dataclass, field
 
 from sentence_transformers import (
     SentenceTransformer,
 )
 import torch
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from models import Corpus, read_states, base_dir
 from data import RetrievalDataset, load_data, PremiseRetrievalDataCollator

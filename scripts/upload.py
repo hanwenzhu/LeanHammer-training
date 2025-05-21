@@ -3,11 +3,14 @@
 from datetime import datetime
 import json
 import os
+import sys
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import torch
 from huggingface_hub import HfApi, login
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from data import load_data
 

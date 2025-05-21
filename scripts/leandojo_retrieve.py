@@ -5,15 +5,17 @@ import pickle
 import os
 import sys
 
-sys.path.insert(0, "/data/user_data/thomaszh/ReProver")
-
 import numpy as np
 from transformers import AutoTokenizer, T5EncoderModel
 import torch
 import tqdm
 from huggingface_hub import HfApi, login
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from data import load_data
+
+sys.path.insert(0, "/data/user_data/thomaszh/ReProver")
 
 import lean_dojo, common  # unused imports to test that correct env is loaded
 

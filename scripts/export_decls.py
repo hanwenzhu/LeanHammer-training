@@ -1,6 +1,10 @@
 import json
+import sys
+import os
 
 import tqdm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from data import load_data
 
