@@ -57,6 +57,11 @@ np.save(export_embeddings_path, corpus_embeddings.cpu().numpy())
 
 api = HfApi()
 
+api.create_branch(
+    repo_id=embeddings_push_repo, repo_type="dataset", branch=revision,
+    exist_ok=True,
+)
+
 api.upload_file(
     repo_id=embeddings_push_repo, repo_type="dataset", revision=revision,
     path_or_fileobj=export_embeddings_path,
