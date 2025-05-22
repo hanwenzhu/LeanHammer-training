@@ -4,6 +4,7 @@ from datetime import datetime
 import json
 import os
 import sys
+import tarfile
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -19,7 +20,8 @@ mathlib_only = False
 model_name = "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5"
 model_path = f"/data/user_data/thomaszh/models/{model_name}/final"
 model_push_repo = f"{model_name}"
-embeddings_push_repo = "l3lab/lean-premises"
+data_archive_path = "premises.tar.gz"
+data_push_repo = "l3lab/lean-premises"
 with open(os.path.join(data_dir, "revision")) as f:
     revision = f.read().strip()
 
@@ -58,27 +60,38 @@ np.save(export_embeddings_path, corpus_embeddings.cpu().numpy())
 api = HfApi()
 
 api.create_branch(
-    repo_id=embeddings_push_repo, repo_type="dataset", branch=revision,
+    repo_id=data_push_repo, repo_type="dataset", branch=revision,
     exist_ok=True,
 )
 
+# Upload pre-computed embeddings
 api.upload_file(
-    repo_id=embeddings_push_repo, repo_type="dataset", revision=revision,
+    repo_id=data_push_repo, repo_type="dataset", revision=revision,
     path_or_fileobj=export_embeddings_path,
     path_in_repo=embeddings_path_in_repo,
 )
 
-api.upload_folder(
-    repo_id=embeddings_push_repo, repo_type="dataset", revision=revision,
-    folder_path=data_dir,
-    path_in_repo=".",
-    allow_patterns=[
-        "revision",
-        "Modules.jsonl",
-        "HammerBlacklist.jsonl",
-        "Declarations/*.jsonl",
-        "Imports/*.jsonl",
-    ]
+# Upload premises
+with tarfile.open(data_archive_path, "w:gz") as tar:
+    for item in ["revision", "Modules.jsonl", "HammerBlacklist.jsonl", "Declarations", "Imports"]:
+        item_path = os.path.join(data_dir, item)
+        tar.add(item_path, arcname=item)
+api.upload_file(
+    repo_id=data_push_repo, repo_type="dataset", revision=revision,
+    path_or_fileobj=data_archive_path,
+    path_in_repo="premises.tar.gz",
 )
 
-# Next steps see notes
+# Too many small files is not compatible with Hugging Face's rate limiting
+# api.upload_folder(
+#     repo_id=data_push_repo, repo_type="dataset", revision=revision,
+#     folder_path=data_dir,
+#     path_in_repo=".",
+#     allow_patterns=[
+#         "revision",
+#         "Modules.jsonl",
+#         "HammerBlacklist.jsonl",
+#         "Declarations/*.jsonl",
+#         "Imports/*.jsonl",
+#     ]
+# )
