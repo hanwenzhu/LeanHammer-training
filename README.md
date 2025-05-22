@@ -26,7 +26,7 @@ See `train.sh` for an example training run.
 The premise selection would need to access the model, Mathlib premise corpus, and pre-computed embeddings of these premises.
 We store these on Hugging Face.
 
-Run `python scripts/upload.py` (you need access to [l3lab/lean-premises](https://huggingface.co/datasets/l3lab/lean-premises)).
+Run `python scripts/upload.py` (you need access to [l3lab/lean-premises](https://huggingface.co/datasets/l3lab/lean-premises); alternatively you may specify your own Hugging Face dataset repo in both `scripts/upload.py` and the premise selection server environment).
 This uploads the model weights to `model_push_repo` at Mathlib's revision (e.g. `v4.18.0`), and
 the premise corpus and its pre-computed embeddings
 for premises in Mathlib, Batteries, and Lean core to [l3lab/lean-premises](https://huggingface.co/datasets/l3lab/lean-premises)
