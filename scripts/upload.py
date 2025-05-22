@@ -41,7 +41,7 @@ model = SentenceTransformer(model_path)
 model.eval()
 torch.inference_mode()
 
-model.push_to_hub(model_push_repo, revision=revision)
+model.push_to_hub(model_push_repo, revision=revision, exist_ok=True)
 
 
 ### Export embeddings
