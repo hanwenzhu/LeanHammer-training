@@ -478,4 +478,4 @@ def read_states(base_dir: str, mathlib_only: bool = False) -> List[StateWithTact
     return states
 
 # For testing
-base_dir = "/data/user_data/thomaszh/Mathlib"
+base_dir = "/data/user_data/thomaszh/mathlib"

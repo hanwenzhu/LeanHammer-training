@@ -92,7 +92,7 @@ with open(decl_names_for_benchmark_file) as f:
         decl_names_for_benchmark = [{"decl_name": entry["theoremName"], "module": entry["module"]} for entry in minictx_entries]
 
 def write_premises_dir(dir, decls, results, pred_simp_all_hint: bool):
-    """build Examples/Mathlib/TrainingDataWithPremises-like directory but with retrieved premises from `results`
+    """Build TrainingDataWithPremises-like directory but with retrieved premises from `results`
     Returns `decls` filtered to the ones with premsies found in `results`
     """
     not_found_decl_names = []

@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
             if args.proof_length:
                 module = entry["module"]
-                if os.path.exists(full_proof_filename := f"/home/thomaszh/ntp-toolkit/Examples/Mathlib/FullProof/{module}.jsonl"):
+                if os.path.exists(full_proof_filename := f"/home/thomaszh/ntp-toolkit/Examples/mathlib/FullProof/{module}.jsonl"):
                     with open(full_proof_filename) as f:
                         for l in f:
                             full_proof_data = json.loads(l)

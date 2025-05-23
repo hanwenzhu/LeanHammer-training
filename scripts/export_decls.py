@@ -16,7 +16,7 @@ tag = ""
 if "naive" in tag:
     data_dir = "/data/user_data/thomaszh/ntp-toolkit-naive/Examples/Mathlib"
 else:
-    data_dir = "/data/user_data/thomaszh/Mathlib"
+    data_dir = "/data/user_data/thomaszh/mathlib"
 
 mathlib_only = False
 dataset_train, dataset_valid, dataset_test = load_data(

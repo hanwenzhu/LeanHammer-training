@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from data import load_data
 
-data_dir = "/data/user_data/thomaszh/Mathlib"
+data_dir = "/data/user_data/thomaszh/mathlib"
 mathlib_only = False
 model_name = "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5"
 model_path = f"/data/user_data/thomaszh/models/{model_name}/final"

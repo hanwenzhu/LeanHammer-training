@@ -4,14 +4,14 @@
 
 To extract data, use the [`hammer` branch of ntp-toolkit](https://github.com/cmu-l3/ntp-toolkit/tree/hammer). Please follow the instructions at the start of README.md.
 
-After data extraction, training data will be in some `ntp-toolkit/Examples/Mathlib`, in which there should exist the following files:
+After data extraction, training data will be in some `ntp-toolkit/Examples/mathlib`, in which there should exist the following files:
 ```
-Examples/Mathlib/Imports/*.jsonl                   # imports of each module
-Examples/Mathlib/Declarations/*.jsonl              # declarations in each module
-Examples/Mathlib/TrainingDataWithPremises/*.jsonl  # pairs of (proof state, set of premises) in each module
-Examples/Mathlib/WithImports/*.lean                # source Lean code for each module, modified with a `import Hammer` line inserted at the beginning (for benchmarking purposes)
-Examples/Mathlib/HammerBlacklist.jsonl             # blacklist of very basic logic theorems not included in training
-Examples/Mathlib/revision                          # revision (commit or tag) of Mathlib extracted
+Examples/mathlib/Imports/*.jsonl                   # imports of each module
+Examples/mathlib/Declarations/*.jsonl              # declarations in each module
+Examples/mathlib/TrainingDataWithPremises/*.jsonl  # pairs of (proof state, set of premises) in each module
+Examples/mathlib/WithImports/*.lean                # source Lean code for each module, modified with a `import Hammer` line inserted at the beginning (for benchmarking purposes)
+Examples/mathlib/HammerBlacklist.jsonl             # blacklist of very basic logic theorems not included in training
+Examples/mathlib/revision                          # revision (commit or tag) of Mathlib extracted
 ```
 
 ## Training

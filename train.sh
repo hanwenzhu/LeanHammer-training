@@ -47,7 +47,7 @@ LR=2e-4
 # MINI_BATCH_SIZE=8
 
 ## Data arguments
-DATA_DIR="/data/user_data/thomaszh/Mathlib"
+DATA_DIR="/data/user_data/thomaszh/mathlib"
 FILTER=True
 
 # naive:

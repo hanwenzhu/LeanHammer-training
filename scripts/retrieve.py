@@ -29,7 +29,7 @@ parser.add_argument("--model_path", type=str, default=None)
 args = parser.parse_args()
 
 dataset_train, dataset_valid, dataset_test = load_data(
-    input("data dir (default /data/user_data/thomaszh/Mathlib): ") or "/data/user_data/thomaszh/Mathlib",
+    input("data dir (default /data/user_data/thomaszh/mathlib): ") or "/data/user_data/thomaszh/mathlib",
     mathlib_only=args.mathlib_only,
     num_negatives_per_state=3  # not used
 )
