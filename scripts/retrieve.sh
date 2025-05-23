@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 source /home/thomaszh/.bashrc
-cd /home/thomaszh/premise-retrieval
+cd /home/thomaszh/LeanHammer-training
 conda activate lm
 set -xe
 

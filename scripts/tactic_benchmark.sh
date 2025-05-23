@@ -9,7 +9,7 @@
 source /home/thomaszh/.bashrc
 cd /home/thomaszh/ntp-toolkit
 lake build
-cd /home/thomaszh/premise-retrieval
+cd /home/thomaszh/LeanHammer-training
 conda activate lm
 
 mkdir -p /scratch/thomaszh

@@ -26,6 +26,8 @@ class RetrievalDataset:  # (torch.utils.data.Dataset):
         """The `Corpus` object storing premises to retrieve from."""
         self.states = states
         """All states in the dataset."""
+        self.revision = corpus.revision
+        """Revision (Lean version) of the data extracted."""
 
         self.train = train
         """Whether the dataset is for training."""

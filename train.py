@@ -72,6 +72,16 @@ if __name__ == "__main__":
         print(train_args)
 
 
+    ## Prepare data (mathlib only)
+    dataset_train, dataset_valid, dataset_test = load_data(
+        data_args.data_dir,
+        mathlib_only=data_args.mathlib_only,
+        filter=data_args.filter,
+        nameless=data_args.nameless,
+        num_negatives_per_state=data_args.num_negatives_per_state
+    )
+
+
     ## Prepare model
     if model_args.is_sentence_transformer:
         model_name_or_path = model_args.model_name_or_path
@@ -114,21 +124,14 @@ if __name__ == "__main__":
     model = SentenceTransformer(
         model_name_or_path=model_name_or_path,
         modules=modules,
+        model_card_data=SentenceTransformerModelCardData(
+            train_datasets=[{"name": type(dataset_train).__name__, "revision": dataset_train.revision}]
+        )
         # prompts={"state": model_args.state_prompt, "premise": model_args.premise_prompt}
     )
     # This is a hot fix to comply with HfTrainerDeepSpeedConfig
     # which needs to read model.config.hidden_size to set "auto" params
     model.config = model._first_module().auto_model.config  # type: ignore
-
-
-    ## Prepare data (mathlib only)
-    dataset_train, dataset_valid, dataset_test = load_data(
-        data_args.data_dir,
-        mathlib_only=data_args.mathlib_only,
-        filter=data_args.filter,
-        nameless=data_args.nameless,
-        num_negatives_per_state=data_args.num_negatives_per_state
-    )
 
 
     ## Training

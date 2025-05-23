@@ -227,15 +227,6 @@ def read_ntp_toolkit(
     if decode_errors:
         logger.warning(f"Could not read some data from {[os.path.join(data_dir, json_file) for json_file in decode_errors]}")
 
-def read_ntp_toolkit_modules(
-    data_dir: str
-) -> Iterator[str]:
-    """Internal method that reads module names from ntp-toolkit"""
-    for json_file in tqdm.tqdm(sorted(os.listdir(data_dir))):
-        if json_file.endswith(".jsonl"):
-            module = json_file.removesuffix(".jsonl")
-            yield module
-
 
 class PremiseSet:
     """Represents a set of premises.
@@ -350,11 +341,13 @@ class Corpus:
     # MODULE_WHITELIST = ["Mathlib.Tactic"]
     # NAME_WHITELIST = ["Lean.Omega"]
 
-    def __init__(self, premises: List[Premise], imports: Dict[str, Set[str]], modules: List[str], filter: bool = True, blacklist: Optional[Set[str]] = None):
+    def __init__(self, premises: List[Premise], imports: Dict[str, Set[str]], modules: List[str], revision: str, filter: bool = True, blacklist: Optional[Set[str]] = None):
         self.premises: List[Premise] = []
         """All premises in corpus"""
         self.module_to_premises: Dict[str, List[str]] = {module: [] for module in modules}
         """A mapping from module name to premises inside module"""
+        self.revision = revision
+        """Revision (Lean version) of the data extracted."""
         self.name2premise: Dict[str, Premise] = {}
         """Maps from premise name to `Premise`"""
         self.name2idx: Dict[str, int] = {}
@@ -448,6 +441,10 @@ class Corpus:
         """Construct a `Corpus` of premises from `base_dir` of the ntp-toolkit outputs.
         If `filter`, filter out premises that are unlikely to be helpful for tactic generation.
         """
+        revision_file = os.path.join(base_dir, "revision")
+        with open(revision_file) as f:
+            revision = f.read().strip()
+
         blacklist_file = os.path.join(base_dir, "HammerBlacklist.jsonl")
         with open(blacklist_file) as f:
             blacklist = set(json.load(f)["hammerBlacklist"])
@@ -463,9 +460,11 @@ class Corpus:
         for module, i, import_info in read_ntp_toolkit(os.path.join(base_dir, "Imports")):
             imports.setdefault(module, set()).add(import_info["name"])
 
-        modules = list(read_ntp_toolkit_modules(os.path.join(base_dir, "Imports")))
+        modules_file = os.path.join(base_dir, "Modules.jsonl")
+        with open(modules_file) as f:
+            modules = sorted([json.loads(l)["name"] for l in f])
 
-        return cls(premises=premises, imports=imports, modules=modules, filter=filter, blacklist=blacklist)
+        return cls(premises=premises, imports=imports, modules=modules, revision=revision, filter=filter, blacklist=blacklist)
 
 
 def read_states(base_dir: str, mathlib_only: bool = False) -> List[StateWithTactic]:
