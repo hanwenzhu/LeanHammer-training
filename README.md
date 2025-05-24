@@ -1,5 +1,7 @@
 # LeanHammer Training
 
+This is the training script for a transformer-based premise selector, developed as part of [LeanHammer](https://github.com/JOSHCLUNE/LeanHammer).
+
 ## Training data preparation
 
 To extract data, use the [`hammer` branch of ntp-toolkit](https://github.com/cmu-l3/ntp-toolkit/tree/hammer). Please follow the instructions at the start of README.md.
@@ -23,7 +25,7 @@ See `train.sh` for an example training run.
 
 #### Exporting the model, premise corpus, and pre-computed embeddings
 
-The premise selection would need to access the model, Mathlib premise corpus, and pre-computed embeddings of these premises.
+The premise selection [deployment](https://github.com/hanwenzhu/lean-premise-server) would need to access the model, Mathlib premise corpus, and pre-computed embeddings of these premises.
 We store these on Hugging Face.
 
 Run `python scripts/upload.py` (you need access to [l3lab/lean-premises](https://huggingface.co/datasets/l3lab/lean-premises); alternatively you may specify your own Hugging Face dataset repo in both `scripts/upload.py` and the premise selection server environment).
@@ -31,6 +33,8 @@ This uploads the model weights to `model_push_repo` at Mathlib's revision (e.g. 
 the premise corpus and its pre-computed embeddings
 for premises in Mathlib, Batteries, and Lean core to [l3lab/lean-premises](https://huggingface.co/datasets/l3lab/lean-premises)
 at Mathlib's revision (e.g. `v4.18.0`).
+
+For deployment to a premise selection service, see [lean-premise-server](https://github.com/hanwenzhu/lean-premise-server).
 
 #### Retrieving premises for tactic benchmarking
 
