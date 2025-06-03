@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-#SBATCH --cpus-per-task=4
-#SBATCH --gres=gpu:A6000:1
-#SBATCH --mem=128G
+#SBATCH --cpus-per-task=64
+#SBATCH --gres=gpu:A6000:4
+#SBATCH --mem=512G
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.out
 #SBATCH --time=2-00:00:00
@@ -91,7 +91,7 @@ else
     echo "Starting training from scratch at $OUTPUT_DIR"
 fi
 
-python train.py \
+torchrun --nproc_per_node=4 train.py \
     --model_name_or_path $MODEL_PATH \
     --is_sentence_transformer $IS_SENTENCE_TRANSFORMER \
     --pooling_mode $POOLING_MODE \

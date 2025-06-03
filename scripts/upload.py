@@ -17,7 +17,7 @@ from data import load_data
 
 # System-specific configs
 data_dir = "/data/user_data/thomaszh/mathlib"
-model_name = "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5"
+model_name = "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne2"
 model_path = f"/data/user_data/thomaszh/models/{model_name}/final"
 
 # Data & model upload configs
