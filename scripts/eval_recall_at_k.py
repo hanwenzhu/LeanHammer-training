@@ -66,7 +66,7 @@ for model_name in model_names:
         for k in [16, 32]:
             decls_path = f"retrieved_premises/{name}_decls{eval_decls_tag}.json"
             if model_name not in ["rf", "knn"] and not model_name.startswith("mepo"):
-                retrieved_premises_path = f"retrieved_premises/{name}-{model_name}.json"
+                retrieved_premises_path = f"retrieved_premises/dot_{name}-{model_name}.json"
             elif model_name.startswith("mepo"):
                 retrieved_premises_path = f"results_mar30-test/{model_name.split('-')[0]}/{model_name}.json"
             else:
