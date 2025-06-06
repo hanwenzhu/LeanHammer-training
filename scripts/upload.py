@@ -41,12 +41,11 @@ torch.inference_mode()
 # Data and model revision
 with open(os.path.join(data_dir, "revision")) as f:
     data_revision = f.read().strip()
-for train_dataset_info in model.model_card_data.train_datasets:
-    if "revision" in train_dataset_info:
-        model_revision = train_dataset_info["revision"]
-        break
-else:
-    print(f"Warning: cannot infer model revision from data. Using data revision {data_revision} as model revision.")
+try:
+    with open(os.path.join(model_path, "revision")) as f:
+        model_revision = f.read().strip()
+except FileNotFoundError as e:
+    print(f"Warning: cannot infer model revision from saved model. Using data revision {data_revision} as model revision.")
     model_revision = data_revision
 
 

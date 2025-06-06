@@ -184,7 +184,10 @@ if __name__ == "__main__":
     trainer.train(resume_from_checkpoint=resume_from_checkpoint)
 
     trainer.save_state()
-    model.save_pretrained(os.path.join(train_args.output_dir, "final"))
+    model_save_path = os.path.join(train_args.output_dir, "final")
+    model.save_pretrained(model_save_path)
+    with open(os.path.join(model_save_path, "revision"), "w") as f:
+        f.write(dataset_train.revision + "\n")
 
     ## Test evaluation
     model.eval()

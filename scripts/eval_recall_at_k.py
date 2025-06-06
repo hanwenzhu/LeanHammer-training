@@ -16,13 +16,13 @@ model_names = [
     # "leandojo-lean4-retriever-byt5-small-hammer",
     # for sanity check, these should equal the wandb-logged value during training
     # "all-MiniLM-L6-v2-lr2e-4-bs256-nneg3-ml-ne5",
-    "all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ml-ne5",
+    # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ml-ne5",
     # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ml-ne5-nameless",
     # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ne5",
     # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ml-ne5-naive",
     # "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml",
-    # "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne2",
-    "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5",
+    "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne2",
+    # "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5",
     # "all-mpnet-base-v2-lr1e-4-bs256-nneg3-ml-ne5",
     # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg0-ml-ne5",
     # "all-MiniLM-L12-v2-lr2e-4-bs256-nneg0-ne5",
@@ -49,7 +49,8 @@ model_names = [
     # "mepo-p0.9-c2.4",
     # "mepo-p0.9-c3.6",
 ]
-eval_decls_tag = "apr25"
+# eval_decls_tag = "_apr25"
+eval_decls_tag = ""
 
 # dataset_train, dataset_valid, dataset_test = load_data(
 #     data_dir,
@@ -63,7 +64,7 @@ for model_name in model_names:
     for name in ["valid", "test"]:
         print(f"=== {name} ===")
         for k in [16, 32]:
-            decls_path = f"retrieved_premises/{name}_decls_{eval_decls_tag}.json"
+            decls_path = f"retrieved_premises/{name}_decls{eval_decls_tag}.json"
             if model_name not in ["rf", "knn"] and not model_name.startswith("mepo"):
                 retrieved_premises_path = f"retrieved_premises/{name}-{model_name}.json"
             elif model_name.startswith("mepo"):
