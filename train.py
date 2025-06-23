@@ -125,6 +125,7 @@ if __name__ == "__main__":
         model_name_or_path=model_name_or_path,
         modules=modules,
         model_card_data=SentenceTransformerModelCardData(
+            # NB: this does not seem to have any effect
             train_datasets=[{"name": type(dataset_train).__name__, "revision": dataset_train.revision}]
         )
         # prompts={"state": model_args.state_prompt, "premise": model_args.premise_prompt}

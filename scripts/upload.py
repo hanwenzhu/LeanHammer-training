@@ -22,15 +22,10 @@ model_path = f"/data/user_data/thomaszh/models/{model_name}/final"
 
 # Data & model upload configs
 mathlib_only = False
-model_push_repo = f"{model_name}"
+model_push_repo = f"l3lab/{model_name}"
 data_archive_path = "premises.tar.gz"
 data_archive_path_in_repo = "premises.tar.gz"
 data_push_repo = "l3lab/lean-premises"
-
-# Embeddings upload configs
-os.makedirs("embeddings", exist_ok=True)
-export_embeddings_path = f"embeddings/embeddings_{model_name}.npy"
-embeddings_path_in_repo = f"embeddings/{model_name}.npy"
 
 # Load model
 print(f"Loading model from {model_path}")
@@ -41,13 +36,14 @@ torch.inference_mode()
 # Data and model revision
 with open(os.path.join(data_dir, "revision")) as f:
     data_revision = f.read().strip()
-try:
-    with open(os.path.join(model_path, "revision")) as f:
-        model_revision = f.read().strip()
-except FileNotFoundError as e:
-    print(f"Warning: cannot infer model revision from saved model. Using data revision {data_revision} as model revision.")
-    model_revision = data_revision
+with open(os.path.join(model_path, "revision")) as f:
+    model_revision = f.read().strip()
 
+
+# Embeddings upload configs
+os.makedirs("embeddings", exist_ok=True)
+export_embeddings_path = f"embeddings/{model_name}-{model_revision}.npy"
+embeddings_path_in_repo = f"embeddings/{model_name}-{model_revision}.npy"
 
 # Load data
 dataset_train, dataset_valid, dataset_test = load_data(
