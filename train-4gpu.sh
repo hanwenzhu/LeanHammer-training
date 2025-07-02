@@ -83,10 +83,10 @@ if [[ "$NAMELESS" == "True" ]]; then
 fi
 RUN_NAME+=""  # add any extra name
 OUTPUT_DIR="/data/user_data/thomaszh/models/${RUN_NAME}"
-if [[ -f "$DATA_DIR/revision" && -f "$OUTPUT_DIR/revision" && "$(cat $DATA_DIR/revision)" != "$(cat $OUTPUT_DIR/revision)" ]]; then
+if [[ -f "$DATA_DIR/revision" && -f "$OUTPUT_DIR/final/revision" && "$(cat $DATA_DIR/revision)" != "$(cat $OUTPUT_DIR/final/revision)" ]]; then
     RESUME_FROM_CHECKPOINT="False"
     rm -rf $OUTPUT_DIR
-    echo "Training on data at $(cat $DATA_DIR/revision); overriding previous checkpoint trained on earlier data at $(cat $OUTPUT_DIR/revision)"
+    echo "Training on data at $(cat $DATA_DIR/revision); overriding previous checkpoint trained on earlier data at $(cat $OUTPUT_DIR/final/revision)"
 elif compgen -G "$OUTPUT_DIR/checkpoint-*"; then
     RESUME_FROM_CHECKPOINT="True"  # note: the train_args.resume_from_checkpoint argument expects a `str`, see `train.py` for explicit conversion to bool
     echo "Resuming from latest checkpoint at $OUTPUT_DIR"
