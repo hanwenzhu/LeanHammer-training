@@ -149,8 +149,11 @@ class Premise(BaseInfo):
     kind: str
     """Declaration type (def / theorem / ...)"""
 
-    args: List[str]
-    """List of pretty-printed arguments"""
+    type_args: List[str]
+    """List of pretty-printed type arguments"""
+
+    type_body: str
+    """Pretty-printed type body"""
 
     type: str
     """Pretty-printed resulting type"""
@@ -174,7 +177,8 @@ class Premise(BaseInfo):
             idx_in_module=idx_in_module,
             kind=info["kind"],
             name=info["name"],
-            args=info["args"],
+            type_args=info["typeArgs"],
+            type_body=info["typeBody"],
             type=info["type"],
             doc=info["doc"],
             line=info["line"],
@@ -185,11 +189,11 @@ class Premise(BaseInfo):
         )
 
     def to_string(self):
-        args = " ".join(self.args)
+        type_args = " ".join(self.type_args)
         if self.nameless:
-            prettified = f"{self.kind} {args} : {self.type}"
+            prettified = f"{self.kind} {type_args} : {self.type_body}"
         else:
-            prettified = f"{self.kind} {self.name} {args} : {self.type}"
+            prettified = f"{self.kind} {self.name} {type_args} : {self.type_body}"
         if self.doc is not None:
             prettified = f"/-- {self.doc.strip()} -/\n{prettified}"
         return prettified
@@ -200,7 +204,7 @@ class SimplePremise(Premise):
     def __init__(self, name: str, decl: str, module: str):
         self.decl: str = decl
         # HACK: here the irrelevant fields are given junk values
-        Premise.__init__(self, name, module, 0, 0, 0, "", [], "", None, True, True)
+        Premise.__init__(self, name, module, 0, 0, 0, "", [], "", "", None, True, True)
 
     def to_string(self):
         return self.decl
@@ -308,7 +312,7 @@ class PremiseSet:
     def sample(self, size: int, generator: Optional["torch.Generator"] = None) -> List[Premise]:
         import torch
         if len(self) == 0:  # extreme exception
-            return [Premise("", "Init.Prelude", 0, 0, 0, "", [], "", None, False, False) for _ in range(size)]
+            return [Premise("", "Init.Prelude", 0, 0, 0, "", [], "", "", None, False, False) for _ in range(size)]
         if generator is not None:
             indices = torch.randint(len(self), (size,), generator=generator).tolist()
         else:

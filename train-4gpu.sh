@@ -47,7 +47,7 @@ LR=2e-4
 # MINI_BATCH_SIZE=8
 
 ## Data arguments
-DATA_DIR="/data/user_data/thomaszh/mathlib"
+DATA_DIR="/data/user_data/thomaszh/declarations2/mathlib"
 FILTER=True
 
 # naive:
@@ -82,7 +82,7 @@ if [[ "$NAMELESS" == "True" ]]; then
     RUN_NAME+="-nameless"
 fi
 RUN_NAME+=""  # add any extra name
-OUTPUT_DIR="/data/user_data/thomaszh/models/${RUN_NAME}"
+OUTPUT_DIR="/data/user_data/thomaszh/declarations2/models/${RUN_NAME}"
 if [[ -f "$DATA_DIR/revision" && -f "$OUTPUT_DIR/final/revision" && "$(cat $DATA_DIR/revision)" != "$(cat $OUTPUT_DIR/final/revision)" ]]; then
     RESUME_FROM_CHECKPOINT="False"
     rm -rf $OUTPUT_DIR
