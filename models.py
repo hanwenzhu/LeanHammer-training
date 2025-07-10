@@ -177,8 +177,9 @@ class Premise(BaseInfo):
             idx_in_module=idx_in_module,
             kind=info["kind"],
             name=info["name"],
-            type_args=info["typeArgs"],
-            type_body=info["typeBody"],
+            # TODO: remove the get after updating ntp-toolkit
+            type_args=info.get("typeArgs", info.get("args", [])),
+            type_body=info.get("typeBody", info.get("type", "")),
             type=info["type"],
             doc=info["doc"],
             line=info["line"],
@@ -336,14 +337,9 @@ class Corpus:
     NAME_BLACKLIST = ["Lean", "Lake", "Qq"]
 
     # Premises with resulting type starting with "Lean" are filtered out (Lean.ParserDescr, etc.)
-    TYPE_PREFIX_BLACKLIST = ["Lean."]
+    TYPE_BODY_PREFIX_BLACKLIST = ["Lean."]
 
     IS_PROP_FILTER = False
-
-    # On the one hand many math proofs will use lemmas in these.
-    # On the other hand, in this case we should use the tactics directly instead of Hammer at test time.
-    # MODULE_WHITELIST = ["Mathlib.Tactic"]
-    # NAME_WHITELIST = ["Lean.Omega"]
 
     def __init__(self, premises: List[Premise], imports: Dict[str, Set[str]], modules: List[str], revision: str, filter: bool = True, blacklist: Optional[Set[str]] = None):
         self.premises: List[Premise] = []
@@ -362,17 +358,8 @@ class Corpus:
         """The names of the given list of premises during initialization before filtering to `self.premises`"""
 
         for premise in premises:
-            if filter:
-                if blacklist is not None and premise.name in blacklist:
-                    continue
-                if any(blacklisted in premise.module.split(".") for blacklisted in self.MODULE_BLACKLIST):
-                    continue
-                if any(blacklisted in premise.name.split(".") for blacklisted in self.NAME_BLACKLIST):
-                    continue
-                if any(premise.type.startswith(blacklisted) for blacklisted in self.TYPE_PREFIX_BLACKLIST):
-                    continue
-                if self.IS_PROP_FILTER and not premise.is_prop:
-                    continue
+            if filter and not self.is_allowed_premise(premise, blacklist):
+                continue
             if premise.name in self.name2premise:
                 # This happens in very rare cases; e.g. Subtype.ext_val_iff
                 continue
@@ -386,7 +373,22 @@ class Corpus:
         self.modules = modules
         """Names of all modules"""
 
+    @classmethod
+    def is_allowed_premise(cls, premise: Premise, name_blacklist: Optional[Set[str]]) -> bool:
+        if name_blacklist is not None and premise.name in name_blacklist:
+            return False
+        if any(blacklisted in premise.module.split(".") for blacklisted in cls.MODULE_BLACKLIST):
+            return False
+        if any(blacklisted in premise.name.split(".") for blacklisted in cls.NAME_BLACKLIST):
+            return False
+        if any(premise.type_body.startswith(blacklisted) for blacklisted in cls.TYPE_BODY_PREFIX_BLACKLIST):
+            return False
+        if cls.IS_PROP_FILTER and not premise.is_prop:
+            return False
+        return True
+
     def add_premise(self, premise: Premise):
+        """Adds a premise to the corpus. This function is not used except for testing."""
         self.name2idx[premise.name] = len(self.premises)
         self.premises.append(premise)
         self.module_to_premises.setdefault(premise.module, []).append(premise.name)
