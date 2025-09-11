@@ -81,7 +81,7 @@ fi
 if [[ "$NAMELESS" == "True" ]]; then
     RUN_NAME+="-nameless"
 fi
-RUN_NAME+=""  # add any extra name
+RUN_NAME+="-declarations2"  # add any extra name
 OUTPUT_DIR="/data/user_data/thomaszh/declarations2/models/${RUN_NAME}"
 if [[ -f "$DATA_DIR/revision" && -f "$OUTPUT_DIR/final/revision" && "$(cat $DATA_DIR/revision)" != "$(cat $OUTPUT_DIR/final/revision)" ]]; then
     RESUME_FROM_CHECKPOINT="False"
