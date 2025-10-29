@@ -39,26 +39,28 @@ with open(os.path.join(data_dir, "revision")) as f:
 with open(os.path.join(model_path, "revision")) as f:
     model_revision = f.read().strip()
 
-
 # Embeddings upload configs
 os.makedirs("embeddings", exist_ok=True)
 export_embeddings_path = f"embeddings/{model_name}-{model_revision}.npy"
 embeddings_path_in_repo = f"embeddings/{model_name}-{model_revision}.npy"
 
+
+### Push model to hub
+# Convert to ONNX so that the uploaded model also has an ONNX format at onnx/
+print("Converting model to ONNX")
+onnx_model = SentenceTransformer(model_path, backend="onnx", model_kwargs={"export": True})
+print("NB(Thomas): When running on SLURM, you may see many errors above with 'pthread_setaffinity_np failed for thread'. I think it is safe to ignore them.")
+print(f"Pushing model to {model_push_repo} @ {model_revision}")
+onnx_model.push_to_hub(model_push_repo, revision=model_revision, exist_ok=True)
+
+
+### Export embeddings
 # Load data
 dataset_train, dataset_valid, dataset_test = load_data(
     data_dir,
     mathlib_only=mathlib_only,
     num_negatives_per_state=0
 )
-
-
-### Push model to hub
-print(f"Pushing model to {model_push_repo} @ {model_revision}")
-model.push_to_hub(model_push_repo, revision=model_revision, exist_ok=True)
-
-
-### Export embeddings
 print(f"Embedding premises to {export_embeddings_path}")
 mini_batch_size = 32
 corpus_premises = dataset_test.corpus.premises
