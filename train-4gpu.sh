@@ -10,8 +10,8 @@
 # #SBATCH --time=10-00:00:00
 # #SBATCH --partition=preempt
 
-source /home/thomaszh/.bashrc
-cd /home/thomaszh/LeanHammer-training
+source /home/jclune/.bashrc
+cd /home/jclune/LeanHammer-training
 conda activate lm
 set -xe
 
@@ -47,11 +47,11 @@ LR=2e-4
 # MINI_BATCH_SIZE=8
 
 ## Data arguments
-DATA_DIR="/data/user_data/thomaszh/mathlib"
+DATA_DIR="/data/user_data/jclune/mathlib"
 FILTER=True
 
 # naive:
-# DATA_DIR="/data/user_data/thomaszh/ntp-toolkit-naive/Examples/Mathlib"
+# DATA_DIR="/data/user_data/jclune/ntp-toolkit-naive/Examples/Mathlib"
 # FILTER=False
 
 NAMELESS=False  # default False
@@ -75,14 +75,14 @@ fi
 if [[ "$NUM_EPOCHS" != "1" ]]; then
     RUN_NAME+="-ne${NUM_EPOCHS}"
 fi
-if [[ "$DATA_DIR" == "/data/user_data/thomaszh/ntp-toolkit-naive/Examples/Mathlib" ]]; then
+if [[ "$DATA_DIR" == "/data/user_data/jclune/ntp-toolkit-naive/Examples/Mathlib" ]]; then
     RUN_NAME+="-naive"
 fi
 if [[ "$NAMELESS" == "True" ]]; then
     RUN_NAME+="-nameless"
 fi
 RUN_NAME+=""  # add any extra name
-OUTPUT_DIR="/data/user_data/thomaszh/models/${RUN_NAME}"
+OUTPUT_DIR="/data/user_data/jclune/models/${RUN_NAME}"
 if [[ -f "$DATA_DIR/revision" && -f "$OUTPUT_DIR/final/revision" && "$(cat $DATA_DIR/revision)" != "$(cat $OUTPUT_DIR/final/revision)" ]]; then
     RESUME_FROM_CHECKPOINT="False"
     rm -rf $OUTPUT_DIR

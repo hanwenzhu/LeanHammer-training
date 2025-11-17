@@ -16,9 +16,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from data import load_data
 
 # System-specific configs
-data_dir = "/data/user_data/thomaszh/mathlib"
+data_dir = "/data/user_data/jclune/mathlib"
 model_name = "all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne2"
-model_path = f"/data/user_data/thomaszh/models/{model_name}/final"
+model_path = f"/data/user_data/jclune/models/{model_name}/final"
 
 # Data & model upload configs
 mathlib_only = False
@@ -49,12 +49,12 @@ embeddings_path_in_repo = f"embeddings/{model_name}-{model_revision}.npy"
 # Convert to ONNX so that the uploaded model also has an ONNX format at onnx/
 print("Converting model to ONNX")
 onnx_model = SentenceTransformer(model_path, backend="onnx", model_kwargs={"export": True})
-print("NB(Thomas): When running on SLURM, you may see many errors above with 'pthread_setaffinity_np failed for thread'. I think it is safe to ignore them.")
+print("NB(Josh): When running on SLURM, you may see many errors above with 'pthread_setaffinity_np failed for thread'. I think it is safe to ignore them.")
 print(f"Pushing model to {model_push_repo} @ {model_revision}")
-onnx_model.push_to_hub(model_push_repo, revision=model_revision, exist_ok=True)
+onnx_model.push_to_hub(model_push_repo, revision=model_revision, exist_ok=True) # Uploads onnx model (which can be run on CPUs)
+model.push_to_hub(model_push_repo, revision=model_revision, exist_ok=True) # Uploads regular model (which requires a GPU)
 
-
-### Export embeddings
+### Export embeddings (should run for <~1 hour)
 # Load data
 dataset_train, dataset_valid, dataset_test = load_data(
     data_dir,
