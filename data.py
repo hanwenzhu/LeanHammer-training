@@ -11,6 +11,7 @@ import torch
 import torch.utils.data
 import numpy as np
 import tqdm
+import json
 
 from models import StateWithTactic, Corpus, Premise, read_states, PremiseSet, BaseInfo
 
@@ -158,9 +159,24 @@ def load_data(
         premise = corpus.name2premise[name]
         return premise.can_benchmark
     eligible_names_for_valid_test = [name for name in all_decl_names if is_eligible_for_valid_test(name)]
+    # Original lines
     valid_decl_names = set(eligible_names_for_valid_test[test_num_decl : test_num_decl + valid_num_decl])
     test_decl_names = set(eligible_names_for_valid_test[:test_num_decl])
-    train_decl_names = set(all_decl_names) - valid_decl_names - test_decl_names
+
+    # Modified code to use fixed valid/test set
+    # with open("retrieved_premises/valid_decls_naive.json") as f:
+        # modify below according to the data format JSON
+        # valid_decl_names = set([entry["decl_name"] for entry in json.load(f)])
+    # with open("retrieved_premises/test_decls_naive.json") as f:
+        # modify below according to the data format JSON
+        # test_decl_names = set([entry["decl_name"] for entry in json.load(f)])
+
+    # Resuming original code
+
+    # Below line is to omit valid/test set
+    # train_decl_names = set(all_decl_names) - valid_decl_names - test_decl_names
+    # Below line is to train on everything
+    train_Decl_names = set(all_decl_names)
 
     logger.info(f"Total {len(states)} states from {len(all_decl_names)} declarations")
 

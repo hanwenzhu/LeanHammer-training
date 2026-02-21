@@ -24,12 +24,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--mathlib_only", action="store_true")
-parser.add_argument("--model_name", type=str, default=None)
+parser.add_argument("--model_name", type=str, default="all-distilroberta-v1-lr2e-4-bs1024-nneg3-ml")
 parser.add_argument("--model_path", type=str, default=None)
 args = parser.parse_args()
 
 dataset_train, dataset_valid, dataset_test = load_data(
-    input("data dir (default /data/user_data/thomaszh/mathlib): ") or "/data/user_data/thomaszh/mathlib",
+    input("data dir (default /data/user_data/jclune/mathlib-naive): ") or "/data/user_data/jclune/mathlib-naive",
     mathlib_only=args.mathlib_only,
     num_negatives_per_state=3  # not used
 )
@@ -48,7 +48,7 @@ evaluator_kwargs: Dict[str, Any] = dict(
 )
 
 if args.model_name is not None:
-    model_path = args.model_path or f"/data/user_data/thomaszh/models/{args.model_name}/final"
+    model_path = args.model_path or f"/data/user_data/jclune/models/{args.model_name}/final"
     model = SentenceTransformer(model_path)
     with torch.inference_mode():
         corpus_premises = dataset_test.corpus.premises

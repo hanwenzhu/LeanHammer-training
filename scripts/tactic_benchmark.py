@@ -24,10 +24,10 @@ def get_emoji_from_output(output):
     else:
         return "not tested"
 
-SCRATCH_DIR = "/data/user_data/thomaszh/tmp-premises"
+SCRATCH_DIR = "/data/user_data/jclune/tmp-premises"
 
 parser = argparse.ArgumentParser(description="Run tactic benchmark with premises.")
-parser.add_argument("--ntp_toolkit_path", type=str, default="/home/thomaszh/ntp-toolkit", help="Path to the ntp-toolkit repository containing a tactic_benchmark script.")
+parser.add_argument("--ntp_toolkit_path", type=str, default="/home/jclune/ntp-toolkit-naive", help="Path to the ntp-toolkit repository containing a tactic_benchmark script.")
 parser.add_argument("--decl_names_file", type=str, default=None, help="File containing declaration names for benchmark.")
 parser.add_argument("--premises_file", type=str, default=None, help="File containing retrieved premises (default: use ground truth premises).")
 parser.add_argument("--out_dir", type=str, default=None, help="Output directory for results.")
@@ -173,7 +173,7 @@ else:
 
     if premises_file is None:  # use gt premises; if don't want this then set e.g. --premises_file ""
         # TODO hardcoded path
-        premises_jsonl_dir = f"/home/thomaszh/ntp-toolkit/Examples/{minictx_split.capitalize()}/TrainingDataWithPremises/"
+        premises_jsonl_dir = f"/home/jclune/ntp-toolkit-naive/Examples/{minictx_split.capitalize()}/TrainingDataWithPremises/"
         assert os.path.isdir(premises_jsonl_dir)
         for fname in glob.glob(os.path.join(premises_jsonl_dir, "*.jsonl")):
             with open(fname) as f:
@@ -185,7 +185,7 @@ else:
                         results[decl_name]["premises"] = [r[1:r.index(',')] for r in recommendation]
                         results[decl_name]["hints"] = [r[r.index(',') + 1:-1].strip() for r in recommendation]
         # for some reason TrainingDataWithPremises misses some theorems, so we also use Premises as a backup
-        premises_jsonl_dir = f"/home/thomaszh/ntp-toolkit-cmu-l3/Examples/{minictx_split}/Premises/"
+        premises_jsonl_dir = f"/home/jclune/ntp-toolkit-cmu-l3/Examples/{minictx_split}/Premises/"
         assert os.path.isdir(premises_jsonl_dir)
         for fname in glob.glob(os.path.join(premises_jsonl_dir, "*.jsonl")):
             with open(fname) as f:

@@ -51,7 +51,7 @@ DATA_DIR="/data/user_data/jclune/mathlib"
 FILTER=True
 
 # naive:
-# DATA_DIR="/data/user_data/jclune/ntp-toolkit-naive/Examples/Mathlib"
+# DATA_DIR="/data/user_data/jclune/mathlib-naive-collection"
 # FILTER=False
 
 NAMELESS=False  # default False

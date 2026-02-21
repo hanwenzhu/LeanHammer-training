@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
             if args.proof_length:
                 module = entry["module"]
-                if os.path.exists(full_proof_filename := f"/home/thomaszh/ntp-toolkit/Examples/mathlib/FullProof/{module}.jsonl"):
+                if os.path.exists(full_proof_filename := f"/home/jclune/ntp-toolkit-naive/Examples/mathlib/FullProof/{module}.jsonl"):
                     with open(full_proof_filename) as f:
                         for l in f:
                             full_proof_data = json.loads(l)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
                     print(f"warning: Full proof data for {decl_name} not found")
                     proof_str[decl_name] = None
                     proof_length[decl_name] = None
-                with open("/home/thomaszh/premise-retrieval/retrieved_premises/eval_decls_mar03.json") as f:
+                with open("/home/jclune/LeanHammer-training/retrieved_premises/valid_decls_naive.json") as f:
                     for gt_entry in json.load(f):
                         if gt_entry["decl_name"] == decl_name:
                             proof_gt_size[decl_name] = len(gt_entry["gt_premises"])

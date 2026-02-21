@@ -14,9 +14,9 @@ tag = ""
 # tag = "_naive-blacklist"
 
 if "naive" in tag:
-    data_dir = "/data/user_data/thomaszh/ntp-toolkit-naive/Examples/Mathlib"
+    data_dir = "/data/user_data/jclune/mathlib-naive"
 else:
-    data_dir = "/data/user_data/thomaszh/mathlib"
+    data_dir = "/data/user_data/jclune/mathlib"
 
 mathlib_only = False
 dataset_train, dataset_valid, dataset_test = load_data(

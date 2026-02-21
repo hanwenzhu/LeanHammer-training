@@ -1,21 +1,23 @@
 #!/usr/bin/bash
 
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=64
+#SBATCH --gres=gpu:A6000:4
 #SBATCH --mem=512G
-#SBATCH --time=1-00:00:00
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.out
+#SBATCH --time=1-00:00:00
+#SBATCH --partition=general
 
-source /home/thomaszh/.bashrc
-cd /home/thomaszh/ntp-toolkit
+source /home/jclune/.bashrc
+cd /home/jclune/ntp-toolkit-naive
 lake build
-cd /home/thomaszh/LeanHammer-training
+cd /home/jclune/LeanHammer-training
 conda activate lm
 
-mkdir -p /scratch/thomaszh
+mkdir -p /scratch/jclune
 
 MAX_WORKERS=16
-SPLIT=test
+SPLIT=valid
 
     # all-mpnet-base-v2-lr7e-5-bs256-nneg3-ml \
     # all-roberta-large-v1-lr5e-5-bs256-nneg3-ml \
@@ -36,17 +38,12 @@ SPLIT=test
     # all-mpnet-base-v2-lr1e-4-bs256-nneg3-ml-ne5 \
     # all-MiniLM-L12-v2-lr2e-4-bs256-nneg3-ml-ne5 \
 for MODEL_NAME in \
-    all-distilroberta-v1-lr2e-4-bs256-nneg3-ml-ne5 \
+  all-distilroberta-v1-lr2e-4-bs1024-nneg3-ml \
 ; do
-    PREMISES_RETRIEVED=retrieved_premises/dot_$SPLIT-$MODEL_NAME.json
+    PREMISES_RETRIEVED=retrieved_premises/naive-blacklist/dot_$SPLIT-$MODEL_NAME.json
 
     # run export_decls.py
-    DECL_NAMES=retrieved_premises/${SPLIT}_decls_apr25.json
-    if [[ "$MODEL_NAME" == "gt-naive" ]]; then
-        DECL_NAMES=retrieved_premises/${SPLIT}_decls_naive.json
-    elif [[ "$MODEL_NAME" == "gt-naive-blacklist" ]]; then
-        DECL_NAMES=retrieved_premises/${SPLIT}_decls_naive-blacklist.json
-    fi
+    DECL_NAMES=retrieved_premises/${SPLIT}_decls_naive.json
 
     # PREMISES_RETRIEVED_WITH_HINTS=retrieved_premises/simp_all_hints_$SPLIT-ce-all-distilroberta-v1-lr2e-4-bs1024-nneg3-mlbs-lr1e-5-bs64-nneg8-ml.json
 
@@ -59,7 +56,7 @@ for MODEL_NAME in \
     # mar11: fix contamination
     # mar30: server refactor
     # apr25: v4.18
-    RESULTS_DIR=results_apr25-$SPLIT/$MODEL_NAME
+    RESULTS_DIR=results/naive-blacklist
 
     K=32
     KHC=16
@@ -100,7 +97,7 @@ for MODEL_NAME in \
         # 10
         # for KHC in 8 12 16 20 24; do
         python tactic_benchmark.py $common_args --premises_file $PREMISES_RETRIEVED --benchmark_type hammerCore_nosimp --k $KHC
-        python tactic_benchmark.py $common_args --premises_file $PREMISES_RETRIEVED --benchmark_type duper --k $KHC
+        # python tactic_benchmark.py $common_args --premises_file $PREMISES_RETRIEVED --benchmark_type duper --k $KHC
         # done
         # 14
         python tactic_benchmark.py $common_args --premises_file $PREMISES_RETRIEVED --benchmark_type aesop_hammerCore_nosimp --k $KHC
