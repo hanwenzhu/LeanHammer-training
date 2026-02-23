@@ -176,7 +176,7 @@ def load_data(
     # Below line is to omit valid/test set
     # train_decl_names = set(all_decl_names) - valid_decl_names - test_decl_names
     # Below line is to train on everything
-    train_Decl_names = set(all_decl_names)
+    train_decl_names = set(all_decl_names)
 
     logger.info(f"Total {len(states)} states from {len(all_decl_names)} declarations")
 
