@@ -88,6 +88,12 @@ api.upload_file(
 )
 
 # Upload premises
+# NOTE: Each Declarations/<Module>.jsonl file contains exactly the declarations
+# defined in <Module> (i.e. in the file <Module with "." replaced by "/">.lean).
+# Consumers (e.g. lean-premise-server, via read_ntp_toolkit in models.py) rely on
+# the filename to recover each premise's defining module/file, e.g. for the
+# imported_modules filter of /retrieve. Any future change to this format (such as
+# merging the per-module files) must preserve a per-premise module field.
 with tarfile.open(data_archive_path, "w:gz") as tar:
     for item in ["revision", "Modules.jsonl", "HammerBlacklist.jsonl", "Declarations", "Imports"]:
         item_path = os.path.join(data_dir, item)
