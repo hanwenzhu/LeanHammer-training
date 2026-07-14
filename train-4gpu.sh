@@ -11,7 +11,7 @@
 # #SBATCH --partition=preempt
 
 source /home/jclune/.bashrc
-cd /home/jclune/LeanHammer-training
+cd /home/jclune/LeanPremise/LeanHammer-training
 conda activate lm
 set -xe
 
