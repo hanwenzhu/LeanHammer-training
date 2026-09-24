@@ -6,9 +6,9 @@
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.out
 #SBATCH --time=2-00:00:00
-#SBATCH --partition=general
-# #SBATCH --time=10-00:00:00
-# #SBATCH --partition=preempt
+#SBATCH --job-name=LeanPremise_Model_Training
+#SBATCH --partition=l3lab
+#SBATCH --qos=l3lab_qos
 
 source /home/jclune/.bashrc
 cd /home/jclune/LeanPremise/LeanHammer-training
